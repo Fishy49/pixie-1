@@ -195,6 +195,22 @@ class QueryBuilderHandler
     }
 
     /**
+     * Get single value from first row
+     *
+     * @return \stdClass|null
+     */
+    public function single($key)
+    {
+        $this->limit(1);
+        $result = $this->get();
+        if(empty($result)) return null;
+
+        if(!isset($result[0]->{$key})) return null;
+
+        return $result[0]->{$key};
+    }
+
+    /**
      * @param        $value
      * @param string $fieldName
      *
@@ -488,6 +504,24 @@ class QueryBuilderHandler
 
         $fields = $this->addTablePrefix($fields);
         $this->addStatement('selects', $fields);
+        return $this;
+    }
+
+    /**
+     *
+     */
+    public function cache()
+    {
+        $this->addStatement('cache', true);
+        return $this;
+    }
+
+    /**
+     *
+     */
+    public function noCache()
+    {
+        $this->addStatement('no_cache', true);
         return $this;
     }
 

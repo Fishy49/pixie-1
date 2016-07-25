@@ -75,7 +75,7 @@ abstract class BaseAdapter
         $joinString = $this->buildJoin($statements);
 
         $sqlArray = array(
-            'SELECT' . (isset($statements['distinct']) ? ' DISTINCT' : ''),
+            'SELECT' . (isset($statements['distinct']) ? ' DISTINCT' : '') . (isset($statements['cache']) ? ' SQL_CACHE' : '') . ((!isset($statements['cache']) AND isset($statements['no_cache']))? ' SQL_NO_CACHE' : ''),
             $selects,
             'FROM',
             $tables,
@@ -520,14 +520,11 @@ abstract class BaseAdapter
             }
             $joinBuilder = $joinArr['joinBuilder'];
 
-            $sqlArr = array(
-                $sql,
-                strtoupper($joinArr['type']),
-                'JOIN',
-                $table,
-                'ON',
-                $joinBuilder->getQuery('criteriaOnly', false)->getSql()
-            );
+            if(strtolower($criteria['operator']) == "using"){
+                $sqlArr = array($sql, strtoupper($joinArr['type']), 'JOIN', $this->wrapSanitizer($criteria['key']), 'USING(' . $this->wrapSanitizer($criteria['value']) . ')');
+            } else {
+                $sqlArr = array($sql, strtoupper($joinArr['type']), 'JOIN', $table, 'ON', $joinBuilder->getQuery('criteriaOnly', false)->getSql());
+            }
 
             $sql = $this->concatenateQuery($sqlArr);
         }
