@@ -520,6 +520,8 @@ abstract class BaseAdapter
             }
             $joinBuilder = $joinArr['joinBuilder'];
 
+            $criteria = $joinBuilder->getStatements()['criteria'][0];
+
             if(strtolower($criteria['operator']) == "using"){
                 $sqlArr = array($sql, strtoupper($joinArr['type']), 'JOIN', $this->wrapSanitizer($criteria['key']), 'USING(' . $this->wrapSanitizer($criteria['value']) . ')');
             } else {
