@@ -158,7 +158,7 @@ class QueryBuilderHandler
      *
      * @return \stdClass|null
      */
-    public function get()
+    public function get($array = false, $keyVar = false)
     {
         $eventResult = $this->fireEvents('before-select');
         if (!is_null($eventResult)) {
@@ -179,6 +179,16 @@ class QueryBuilderHandler
         $executionTime += microtime(true) - $start;
         $this->pdoStatement = null;
         $this->fireEvents('after-select', $result, $executionTime);
+
+        if($array){
+            $result = get_object_vars($result);
+            if($keyVar){
+                foreach ($result as $key => $row) {
+                    $result[$value->keyVar] = $row;
+                }
+            }
+        }
+
         return $result;
     }
 
