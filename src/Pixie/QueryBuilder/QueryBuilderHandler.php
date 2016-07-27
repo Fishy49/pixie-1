@@ -181,12 +181,15 @@ class QueryBuilderHandler
         $this->fireEvents('after-select', $result, $executionTime);
 
         if($array){
-            $result = get_object_vars($result);
-            if($keyVar){
-                foreach ($result as $key => $row) {
-                    $result[$value->keyVar] = $row;
+            $arrayReturn = array();
+            foreach ($result as $key => $row) {
+                if($keyVar){
+                    $arrayReturn[$row->{$keyVar}] = get_object_vars($row);
+                } else {
+                    $arrayReturn[$key] = get_object_vars($row);
                 }
             }
+            $result = $arrayReturn;
         }
 
         return $result;
