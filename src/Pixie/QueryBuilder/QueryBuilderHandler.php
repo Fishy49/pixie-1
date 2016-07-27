@@ -183,11 +183,7 @@ class QueryBuilderHandler
         if($array){
             $arrayReturn = array();
             foreach ($result as $key => $row) {
-                if($keyVar){
-                    $arrayReturn[$row->{$keyVar}] = get_object_vars($row);
-                } else {
-                    $arrayReturn[$key] = get_object_vars($row);
-                }
+                $arrayReturn[($keyVar)?$row->{$keyVar}:$key] = get_object_vars($row);
             }
             $result = $arrayReturn;
         }
