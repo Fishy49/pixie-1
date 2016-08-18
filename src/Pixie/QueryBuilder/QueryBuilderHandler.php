@@ -878,6 +878,18 @@ class QueryBuilderHandler
         }
     }
 
+    public function beginTransaction(){
+        $this->pdo->beginTransaction();
+    }
+
+    public function rollBack(){
+        $this->pdo->rollBack();
+    }
+
+    public function commit(){
+        $this->pdo->commit();
+    }
+
     /**
      * @param      $table
      * @param      $key
