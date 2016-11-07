@@ -1,4 +1,32 @@
-# Pixie Query Builder [![Build Status](https://travis-ci.org/usmanhalalit/pixie.png?branch=master)](https://travis-ci.org/usmanhalalit/pixie)
+#HACKS & CHANGES
+This is a version of the Pixie Query Builder modified for my personal use. I didn't have time to make sure my changes wouldn't break things for other users (SQLite, PostgreSQL). This shouldn't be used in production without testing.
+###Changes:
+Added support for the MySQL "USING" function for joins:
+```PHP
+QB::table('table_1')->innerJoin('table_1', 'table_2', 'using', 'common_column_name');
+```
+
+Added the "single" method:
+```PHP
+// Uses same logic as "first" but allows passing in the name of a single variable
+$myVariable = QB::table('my_table')->where('id', 3)->single('my_column');
+```
+
+Modified "get" method to accept a boolean to return an array, and to set the keys based on a certain column
+```PHP
+// This will return an array where the array keys are the values from the `id_column`
+$resultArray = QB::table('my_table')->get(true, 'id_column');
+```
+
+Added unsafe transaction functions (no error catching/automatic commit/rollback)
+```PHP
+$qh->beginTransaction();
+$qh->rollBack();
+$qh->commit();
+```
+
+
+# Pixie Query Builder
 A lightweight, expressive, framework agnostic query builder for PHP it can also be referred as a Database Abstraction Layer. Pixie supports MySQL, SQLite and PostgreSQL and it takes care of query sanitization, table prefixing and many other things with a unified API. At least PHP 5.3 is required.
 
 It has some advanced features like:
