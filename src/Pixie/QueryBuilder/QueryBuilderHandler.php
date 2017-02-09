@@ -196,10 +196,13 @@ class QueryBuilderHandler
      *
      * @return \stdClass|null
      */
-    public function first()
+    public function first($array = false)
     {
         $this->limit(1);
         $result = $this->get();
+        if($array){
+            $result[0] = get_object_vars($result[0]);
+        }
         return empty($result) ? null : $result[0];
     }
 

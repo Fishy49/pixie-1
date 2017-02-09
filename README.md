@@ -6,7 +6,7 @@ Added support for the MySQL "USING" function for joins:
 QB::table('table_1')->innerJoin('table_1', 'table_2', 'using', 'common_column_name');
 ```
 
-Added the "single" method:
+Added the "single" method to return a value:
 ```PHP
 // Uses same logic as "first" but allows passing in the name of a single variable
 $myVariable = QB::table('my_table')->where('id', 3)->single('my_column');
